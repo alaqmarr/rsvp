@@ -1,8 +1,6 @@
 import prismadb from "@/lib/db";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(request: Request, reponse: NextResponse) {}
-
 export async function POST(request: Request, response: NextResponse) {
   const body = await request.json();
 
