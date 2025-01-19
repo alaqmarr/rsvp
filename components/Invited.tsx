@@ -54,6 +54,7 @@ export function Invited() {
         } else {
           toast.error("Failed to fetch invitation data.");
         }
+        return response.data;
       } catch (error) {
         toast.error("An error occurred while fetching invitation data.");
       }
@@ -133,7 +134,6 @@ export function Invited() {
                     </FormItem>
                   )}
                 />
-
                 out of {invited} invited
                 <Button type="submit" className="w-full">
                   RSVP
