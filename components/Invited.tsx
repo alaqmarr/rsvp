@@ -121,11 +121,8 @@ export function Invited() {
                         </FormControl>
                         <SelectContent>
                           {Array.from({ length: invited }, (_, index) => (
-                            <SelectItem
-                              key={index + 1}
-                              value={(index + 1).toString()}
-                            >
-                              {index + 1}
+                            <SelectItem key={index} value={index.toString()}>
+                              {index}
                             </SelectItem>
                           ))}
                         </SelectContent>
