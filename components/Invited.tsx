@@ -133,6 +133,8 @@ export function Invited() {
                     </FormItem>
                   )}
                 />
+
+                out of {invited} invited
                 <Button type="submit" className="w-full">
                   RSVP
                 </Button>
