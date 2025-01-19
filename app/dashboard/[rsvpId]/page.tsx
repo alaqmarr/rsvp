@@ -139,7 +139,7 @@ const Dashboard = async ({
 
       <div className="flex flex-col gap-y-4 items-start w-full max-w-[90vw]">
         <p>Attendee Table</p>
-        <Table className="border">
+        <Table className="border bg-white">
           <TableHeader>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -161,7 +161,7 @@ const Dashboard = async ({
           </TableBody>
         </Table>
         <p>Invitations Table</p>
-        <Table className="border">
+        <Table className="border bg-white">
           <TableHeader>
             <TableRow>
               <TableCell>Name</TableCell>
