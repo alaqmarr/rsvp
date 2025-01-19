@@ -1,5 +1,4 @@
 import prismadb from "@/lib/db";
-import { count } from "console";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -60,7 +59,6 @@ export async function POST(
             body: {
               message: "Attendee added successfully",
             },
-            data: attendee,
           };
         }
       }
@@ -80,7 +78,6 @@ export async function POST(
           body: {
             message: "Attendee added successfully",
           },
-          data: invite,
         };
       }
     }
