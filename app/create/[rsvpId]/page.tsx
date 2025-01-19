@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import OpenLink from "@/components/OpenLink";
 import Link from "next/link";
 
-const Success = async ({ params }: { params: { rsvpId: string } }) => {
+const Success = async ({ params }: { params: Promise<{ rsvpId: string }> }) => {
   const query = await params;
   const rsvpId = query.rsvpId;
 

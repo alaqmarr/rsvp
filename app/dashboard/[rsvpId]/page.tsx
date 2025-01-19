@@ -13,7 +13,7 @@ import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const Dashboard = async ({ params }: { params: { rsvpId: string } }) => {
+const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) => {
   const query = await params;
   const rsvpId = query.rsvpId;
 

@@ -10,7 +10,7 @@ import React from "react";
 const Template = async ({
   params,
 }: {
-  params: { inviteId: string; rsvpId: string };
+  params: Promise<{ rsvpId: string, inviteId: string }>;
 }) => {
   const query = await params;
   const inviteId = query.inviteId;
