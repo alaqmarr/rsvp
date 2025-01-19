@@ -12,8 +12,44 @@ import {
 import { Separator } from "@/components/ui/separator";
 import prismadb from "@/lib/db";
 import { CheckCircle } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ rsvpId: string; inviteId: string }>;
+}): Promise<Metadata> {
+  const query = await params;
+  const rsvpId = query.rsvpId;
+  const inviteId = query.inviteId;
+
+  const data = await prismadb.rsvp.findUnique({
+    where: {
+      id: rsvpId,
+    },
+  });
+
+  const invite = await prismadb.invites.findUnique({
+    where: {
+      id: inviteId,
+      rsvpid: rsvpId,
+    },
+  });
+
+  if (!data || !invite) {
+    return {
+      title: "RSVP not found",
+      description: "RSVP not found",
+    };
+  }
+
+  return {
+    title: data.name + " invite for " + invite.name,
+    description: `Invitation from ${data.organiser} to ${invite.name} for ${data.name}`,
+  };
+}
 
 const Template = async ({
   params,
@@ -94,7 +130,7 @@ const Template = async ({
             </p>
           </div>
 
-          <Separator className="bg-black"/>
+          <Separator className="bg-black" />
 
           <div className="flex flex-col items-end justify-center w-full">
             <p className="font-[kanz] font-bold text-2xl">, والسلام</p>

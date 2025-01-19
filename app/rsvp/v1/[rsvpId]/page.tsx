@@ -10,8 +10,38 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import prismadb from "@/lib/db";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ rsvpId: string }>;
+}): Promise<Metadata> {
+  const query = await params;
+  const rsvpId = query.rsvpId;
+
+  const data = await prismadb.rsvp.findUnique({
+    where: {
+      id: rsvpId,
+    },
+  });
+
+  if (!data) {
+    return {
+      title: "RSVP not found",
+      description: "RSVP not found",
+    };
+  }
+
+  return {
+    title: `Invite from ${data.organiser} for ${data.name}`,
+    description: `Venue : ${data.venue} Date : ${new Date(
+      data.date
+    ).toDateString()} Time : ${data.time}`,
+  };
+}
 
 const Template = async ({
   params,

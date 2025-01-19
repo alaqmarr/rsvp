@@ -11,10 +11,22 @@ import {
 } from "@/components/ui/table";
 import prismadb from "@/lib/db";
 import { PlusCircle } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
-const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) => {
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Dashboard",
+    description: "Dashboard for RSVP",
+  };
+}
+
+const Dashboard = async ({
+  params,
+}: {
+  params: Promise<{ rsvpId: string }>;
+}) => {
   const query = await params;
   const rsvpId = query.rsvpId;
 
@@ -43,15 +55,15 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
   const countOfInvitedButNoRSVP = invitedButNoRSVP.length;
 
   let totalInvites = 0;
-    for (const invite of data.invites) {
-        totalInvites += invite.invites;
-    }
+  for (const invite of data.invites) {
+    totalInvites += invite.invites;
+  }
 
-    let attendees = 0;
+  let attendees = 0;
 
-    for (const attendee of data.attendee) {
-        attendees += attendee.count;
-    }
+  for (const attendee of data.attendee) {
+    attendees += attendee.count;
+  }
   return (
     <div className="flex flex-col items-center justify-center p-5 gap-y-3">
       <div className="grid sm:gris-cols-1 md:grid-cols-1 lg:gris-cols-2 xl:grid-cols-3 gap-x-3 gap-y-4">
@@ -61,10 +73,10 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
               <p>Total Invites</p>
 
               <Link href={`/dashboard/${rsvpId}/invitations`}>
-              <Button variant={"default"}>
-                <PlusCircle /> Invite
-              </Button>
-                </Link>
+                <Button variant={"default"}>
+                  <PlusCircle /> Invite
+                </Button>
+              </Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -118,7 +130,6 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
         <AlertDescription className="break-all">
           https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
         </AlertDescription>
-
       </Alert>
       <Button variant="default">
         <Link href={`/dashboard/${rsvpId}/view-template`}>
