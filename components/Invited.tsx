@@ -36,7 +36,10 @@ import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
 
 const formSchema = z.object({
-  count: z.number().int().positive("Please select at least 1 attendee."),
+  count: z
+    .number()
+    .int()
+    .min(0, "Please select a valid number of attendees."),
   willAttend: z.boolean(),
 });
 
@@ -60,7 +63,7 @@ export function Invited() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      count: 1,
+      count: 0, // Default starts from 0
       willAttend: true,
     },
   });
@@ -115,7 +118,7 @@ export function Invited() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Array.from({ length: invited }, (_, index) => (
+                          {Array.from({ length: invited + 1 }, (_, index) => (
                             <SelectItem key={index} value={index.toString()}>
                               {index}
                             </SelectItem>
