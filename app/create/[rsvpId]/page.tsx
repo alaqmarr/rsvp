@@ -25,9 +25,9 @@ const Success = async ({ params }: { params: Promise<{ rsvpId: string }> }) => {
     );
   }
 
-  const publicLink = `https://rsvp.alaqmar.com/rsvp/v1/${rsvpId}`;
-  const dashboardLink = `https://rsvp.alaqmar.com/dashboard/${rsvpId}`;
-  const inviteLink = `https://rsvp.alaqmar.com/dashboard/${rsvpId}/invitations`;
+  const publicLink = `https://rsvp.alaqmar.dev/rsvp/v1/${rsvpId}`;
+  const dashboardLink = `https://rsvp.alaqmar.dev/dashboard/${rsvpId}`;
+  const inviteLink = `https://rsvp.alaqmar.dev/dashboard/${rsvpId}/invitations`;
   return (
     <div className="flex flex-col items-center justify-center p-5 gap-y-3">
       <div className="notifications-container">

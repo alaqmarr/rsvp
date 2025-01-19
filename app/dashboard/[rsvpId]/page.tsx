@@ -189,7 +189,7 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
                           data.name
                         } on ${new Date(data.date).toLocaleDateString()} at ${
                           data.time
-                        }.%0A Click on the link below to RSVP: %0A https://rsvp.alaqmar.com/rsvp/invite/${
+                        }.%0A Click on the link below to RSVP: %0A https://rsvp.alaqmar.dev/rsvp/invite/${
                           invite.id
                         }/${rsvpId}`
                       )}`}
