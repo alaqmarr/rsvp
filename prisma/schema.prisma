@@ -12,3 +12,41 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model rsvp {
+  id          String     @id @default(cuid())
+  name        String
+  time        String
+  venue       String
+  by          String
+  organiser   String
+  description String
+  date        DateTime
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  attendee    attendee[]
+  invites     invites[]
+}
+
+model attendee {
+  id         String   @id @default(cuid())
+  name       String
+  willAttend Boolean
+  rsvpid     String
+  count     Int     @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  RSVP       rsvp     @relation(fields: [rsvpid], references: [id])
+}
+
+model invites {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  rspved    Boolean  @default(false)
+  invites   Int      @default(1)
+  rsvpid    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  RSVP      rsvp     @relation(fields: [rsvpid], references: [id])
+}
