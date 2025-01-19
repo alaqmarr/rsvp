@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import {
   AlertDialog,
@@ -50,7 +50,7 @@ export function Invited() {
       try {
         const response = await axios.get(`/api/get-invite/${inviteId}`);
         if (response.status === 200) {
-          setInvited(response.data.data); // Assuming this returns the count of allowed invites
+          setInvited(response.data.count); // Assuming this returns the count of allowed invites
         } else {
           toast.error("Failed to fetch invitation data.");
         }
@@ -99,7 +99,10 @@ export function Invited() {
           <AlertDialogTitle>😃 Thank you for RSVPing!</AlertDialogTitle>
           <AlertDialogDescription>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="count"
