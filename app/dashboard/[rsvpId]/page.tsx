@@ -146,7 +146,8 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Phone</TableCell>
-              <TableCell>RSVPed</TableCell>
+              <TableCell>Invites</TableCell>
+              <TableCell>RSVPed?</TableCell>
               <TableCell>Message</TableCell>
             </TableRow>
           </TableHeader>
