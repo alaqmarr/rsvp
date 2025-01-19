@@ -16,13 +16,12 @@ export async function POST(
   });
 
   if (!data) {
-    return {
+    return NextResponse.json({
       status: 404,
       body: {
         error: "Invite not found",
       },
-    };
-  }
+    })};
 
   const bodyData = body.data;
 
@@ -54,12 +53,12 @@ export async function POST(
         });
 
         if (invite) {
-          return {
+          return NextResponse.json({
             status: 200,
             body: {
               message: "Attendee added successfully",
             },
-          };
+          });
         }
       }
     } else {
@@ -73,20 +72,20 @@ export async function POST(
       });
 
       if (invite) {
-        return {
+        return NextResponse.json({
           status: 200,
           body: {
-            message: "Attendee added successfully",
+            message: "Invite updated successfully",
           },
-        };
+        });
       }
     }
   } catch (error: any) {
-    return {
+    return NextResponse.json({
       status: 500,
       body: {
         error: error.message,
       },
-    };
+    });
   }
 }
