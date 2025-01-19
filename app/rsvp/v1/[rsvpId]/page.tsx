@@ -6,7 +6,11 @@ import prismadb from "@/lib/db";
 import Link from "next/link";
 import React from "react";
 
-const Template = async ({ params }: { params: Promise<{ rsvpId: string }> }) => {
+const Template = async ({
+  params,
+}: {
+  params: Promise<{ rsvpId: string }>;
+}) => {
   const query = await params;
   const rsvpId = query.rsvpId;
   const data = await prismadb.rsvp.findUnique({
