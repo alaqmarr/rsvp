@@ -66,8 +66,8 @@ const Dashboard = async ({
   }
   return (
     <div className="flex flex-col items-center justify-center p-5 gap-y-3">
-      <div className="grid sm:gris-cols-1 md:grid-cols-1 lg:gris-cols-2 xl:grid-cols-3 gap-x-3 gap-y-4">
-        <Card className="max-w-[80vw] min-w-[300px] shadow-md">
+      <div className="min-w-[50vw] max-w-[80vw] flex justify-around gap-y-3 flex-wrap">
+        <Card className="max-w-[80vw] min-w-[300px] shadow-md bg-slate-100">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <p>Total Invites</p>
@@ -85,14 +85,14 @@ const Dashboard = async ({
               to={totalInvites}
               separator=","
               direction="up"
-              duration={2}
-              className="count-up-text"
+              duration={1}
+              className="count-up-text text-3xl"
             />
             &nbsp;({totalInvites / 8} Thaals)
           </CardContent>
         </Card>
 
-        <Card className="max-w-[80vw] min-w-[300px] shadow-md">
+        <Card className="max-w-[80vw] min-w-[300px] shadow-md bg-slate-100">
           <CardHeader>
             <CardTitle>Attendees</CardTitle>
           </CardHeader>
@@ -102,14 +102,14 @@ const Dashboard = async ({
               to={attendees}
               separator=","
               direction="up"
-              duration={2}
-              className="count-up-text"
+              duration={1}
+              className="count-up-text text-3xl"
             />
             &nbsp;({attendees / 8} Thaals)
           </CardContent>
         </Card>
 
-        <Card className="max-w-[80vw] min-w-[300px] shadow-md">
+        <Card className="max-w-[80vw] min-w-[300px] shadow-md bg-slate-100">
           <CardHeader>
             <CardTitle>Invited but no RSVP</CardTitle>
           </CardHeader>
@@ -119,14 +119,14 @@ const Dashboard = async ({
               to={countOfInvitedButNoRSVP}
               separator=","
               direction="up"
-              duration={2}
-              className="count-up-text"
+              duration={1}
+              className="count-up-text text-3xl"
             />
           </CardContent>
         </Card>
       </div>
-      <Alert>
-        <AlertTitle>General RSVP Link</AlertTitle>
+      <Alert className="max-w-[80vw] bg-slate-100">
+        <AlertTitle className="underline uppercase">General RSVP Link</AlertTitle>
         <AlertDescription className="break-all">
           https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
         </AlertDescription>
@@ -139,7 +139,7 @@ const Dashboard = async ({
 
       <div className="flex flex-col gap-y-4 items-start w-full max-w-[90vw]">
         <p>Attendee Table</p>
-        <Table className="border bg-white">
+        <Table className="w-fit max-w-[80vw] rounded-lg shadow-lg bg-slate-100">
           <TableHeader>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -161,7 +161,7 @@ const Dashboard = async ({
           </TableBody>
         </Table>
         <p>Invitations Table</p>
-        <Table className="border bg-white">
+        <Table className="w-fit max-w-[80vw] shadow-lg rounded-lg bg-slate-100">
           <TableHeader>
             <TableRow>
               <TableCell>Name</TableCell>

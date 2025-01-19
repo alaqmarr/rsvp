@@ -60,9 +60,11 @@ const Invitations = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-5 gap-y-3">
-      <Form {...form}
-      >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 min-w-[280px] max-w-[80vw] flex flex-col items-center text-start">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 min-w-[280px] max-w-[80vw] flex flex-col items-center text-start"
+        >
           <FormField
             control={form.control}
             name="first"
@@ -90,22 +92,22 @@ const Invitations = () => {
             )}
           />
           <FormField
-  control={form.control}
-  name="count"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Number of Guests</FormLabel>
-      <FormControl>
-        <Input
-          type="text" // Change type to text
-          {...field}
-          onChange={(e) => field.onChange(Number(e.target.value))} // Convert input to number on change
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+            control={form.control}
+            name="count"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Number of Guests</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text" // Change type to text
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))} // Convert input to number on change
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}

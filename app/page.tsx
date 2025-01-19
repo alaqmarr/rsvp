@@ -24,62 +24,75 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 export default async function Home() {
-  const rsvps = await prismadb.rsvp.findMany({
+  const rsvpsData = await prismadb.rsvp.findMany({
     include: {
       invites: true,
       attendee: true,
     },
   });
 
+  //sort based on latest date first
+
+  const rsvps = rsvpsData.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
   let totalrsvps = 0;
 
-  for (const rsvp of rsvps) {
+  for (const rsvp of rsvpsData) {
     totalrsvps += rsvp.attendee.length;
   }
 
   return (
     <section className="p-5 flex flex-col items-center justify-center w-full gap-y-4">
-      <div className="grid gap-y-3 gap-x-3 sm:grid-cols-1 md:gris-cols-1 lg:grid-cols-3 xl:grid-cols-3">
-        <Card className=" max-w-[80vw] min-w-[300px] shadow-md">
-          <CardHeader>
-            <CardTitle>Total Events</CardTitle>
-            {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
-          </CardHeader>
-          <CardContent>
-            <CountUp
-              from={0}
-              to={rsvps.length}
-              separator=","
-              direction="up"
-              duration={2}
-              className="count-up-text"
-            />
-          </CardContent>
-        </Card>
-        <Card className="max-w-[80vw] min-w-[300px] shadow-md">
-          <CardHeader>
-            <CardTitle>Total RSVPS</CardTitle>
-            {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
-          </CardHeader>
-          <CardContent>
-            <CountUp
-              from={0}
-              to={totalrsvps}
-              separator=","
-              direction="up"
-              duration={2}
-              className="count-up-text"
-            />
-          </CardContent>
-        </Card>
+      <div className="min-w-[50vw] max-w-[80vw] flex justify-around gap-y-3 flex-wrap">
+        <div>
+          <Card className="max-w-[80vw] min-w-[300px] shadow-md bg-slate-100">
+            <CardHeader>
+              <CardTitle>Total Events Registered</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CountUp
+                from={0}
+                to={rsvpsData.length}
+                separator=","
+                direction="up"
+                duration={2}
+                className="count-up-text text-3xl"
+              />
+            </CardContent>
+          </Card>
+        </div>
+        <div>
+          <Card className="max-w-[80vw] min-w-[300px] shadow-md bg-slate-100">
+            <CardHeader>
+              <CardTitle>Total RSVPs Done</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CountUp
+                from={0}
+                to={totalrsvps}
+                separator=","
+                direction="up"
+                duration={2}
+                className="count-up-text text-3xl"
+              />
+            </CardContent>
+          </Card>
+        </div>
       </div>
+
       <div>
         <Button variant="default">
           <Link href="/create">Create Event</Link>
         </Button>
       </div>
       <div className="flex flex-col items-center justify-center max-w-[80vw]">
-        <Table className="border bg-white rounded-md shadow-md">
+        <Table className="w-fit max-w-[80vw] bg-white rounded-md shadow-md">
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">By</TableHead>
@@ -103,8 +116,8 @@ export default async function Home() {
                 </TableCell>
                 <TableCell>{rsvp.attendee.length}</TableCell>
                 <TableCell className="text-right">
-                  <Link href={`/dashboard/${rsvp.id}`}>
-                    <Button variant="default">Dashboard</Button>
+                  <Link href={`/dashboard/${rsvp.id}`} target="_blank">
+                    <Button variant="secondary">Dashboard</Button>
                   </Link>
                 </TableCell>
               </TableRow>
