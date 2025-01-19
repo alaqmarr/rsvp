@@ -51,6 +51,7 @@ const Invitations = () => {
     try {
       const request = await axios.post(`/api/invite/${rsvpId}`, values);
       toast.success("Invite sent successfully");
+      form.reset();
     } catch (error) {
       toast.error("Failed to send invite");
     }
