@@ -88,6 +88,7 @@ export default async function Home() {
               <TableHead className="text-right">Time</TableHead>
               <TableHead className="text-right">Invited</TableHead>
               <TableHead className="text-right">RSVPed</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -101,6 +102,11 @@ export default async function Home() {
                   {rsvp.invites.length}
                 </TableCell>
                 <TableCell>{rsvp.attendee.length}</TableCell>
+                <TableCell className="text-right">
+                  <Link href={`/dashboard/${rsvp.id}`}>
+                    <Button variant="default">Dashboard</Button>
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
