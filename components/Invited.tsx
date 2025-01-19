@@ -47,12 +47,12 @@ export function Invited() {
 
   useEffect(() => {
     async function fetchData() {
-        const response = await axios.get(`/api/get-invite/${inviteId}`);
-        if (response.status === 200) {
-          setInvited(response.data.count); // Assuming this returns the count of allowed invites
-        } else {
-          toast.error("Failed to fetch invitation data.");
-        }
+      const response = await axios.get(`/api/get-invite/${inviteId}`);
+      if (response.status === 200) {
+        setInvited(response.data.count); // Assuming this returns the count of allowed invites
+      } else {
+        toast.error("Failed to fetch invitation data.");
+      }
     }
     fetchData();
   }, []);
