@@ -1,4 +1,5 @@
-"use client";
+"use client"
+import React, { useState, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,28 +26,41 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
-import { Input } from "@/components/ui/input";
-import { useParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useParams } from "next/navigation";
+
 const formSchema = z.object({
-  count: z.number().int().positive("Please enter a valid number"),
+  count: z.number().int().positive("Please select at least 1 attendee."),
   willAttend: z.boolean(),
 });
+
 export function Invited() {
   const params = useParams();
-  const router = useRouter();
-  const rsvpId = params.rsvpId;
   const inviteId = params.inviteId;
-  // 1. Define your form.
+  const [invited, setInvited] = useState(1);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(`/api/get-invite/${inviteId}`);
+        if (response.status === 200) {
+          setInvited(response.data.data); // Assuming this returns the count of allowed invites
+        } else {
+          toast.error("Failed to fetch invitation data.");
+        }
+      } catch (error) {
+        toast.error("An error occurred while fetching invitation data.");
+      }
+    }
+    fetchData();
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,41 +69,29 @@ export function Invited() {
     },
   });
 
-  const [invited, setInvited] = useState(1);
-  useEffect(() => {
-    async function fetchData() {
-      const request = await axios.get(`/api/get-inv/${inviteId}`);
-      if (request.status === 200) {
-        setInvited(request.data.data);
-      } else {
-        toast.error("Failed to fetch data");
-      }
-    }
-    fetchData();
-  }, [inviteId]);
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Processing request");
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    toast.loading("Processing RSVP...");
     try {
-      const request = await axios.post(`/api/invited/${inviteId}`, values);
-      if (request.status === 200) {
-        toast.remove();
-        toast.success("RSVP created successfully");
+      const response = await axios.post(`/api/invited/${inviteId}`, values);
+      if (response.status === 200) {
+        toast.dismiss();
+        toast.success("RSVP created successfully.");
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
-        toast.error("RSVP failed");
+        toast.error("Failed to submit RSVP.");
       }
-    } catch (error) {}
-  }
+    } catch (error) {
+      toast.error("An error occurred while submitting RSVP.");
+    }
+  };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="secondary" size="lg">
-          <SaveIcon />
-          RSVP NOW
+          <SaveIcon /> RSVP NOW
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-[80vw] rounded-lg">
@@ -97,29 +99,29 @@ export function Invited() {
           <AlertDialogTitle>😃 Thank you for RSVPing!</AlertDialogTitle>
           <AlertDialogDescription>
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-2"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                   control={form.control}
                   name="count"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Number of Attendees</FormLabel>
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value.toFixed()}
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        defaultValue={field.value.toString()}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select count of Attendees" />
+                            <SelectValue placeholder="Select number of attendees" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Array.from({ length: invited }).map((_, index) => (
-                            <SelectItem key={index} value={index.toString()}>
-                              {index}
+                          {Array.from({ length: invited }, (_, index) => (
+                            <SelectItem
+                              key={index + 1}
+                              value={(index + 1).toString()}
+                            >
+                              {index + 1}
                             </SelectItem>
                           ))}
                         </SelectContent>
