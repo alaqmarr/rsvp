@@ -15,7 +15,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body
+        className="bg-gradient-to-r from-blue-200 to-cyan-200"
+        >
           <Toaster/>
           {children}
         </body>

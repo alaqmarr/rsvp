@@ -39,8 +39,8 @@ export default async function Home() {
 
   return (
     <section className="p-5 flex flex-col items-center justify-center w-full gap-y-4">
-      <div className="grid gap-y-3 gap-x-3 sm:grid-cols-1 md:gris-cols-1 lg:grid-cols-3">
-        <Card className="max-w-[80vw] min-w-[300px] shadow-md">
+      <div className="grid gap-y-3 gap-x-3 sm:grid-cols-1 md:gris-cols-1 lg:grid-cols-3 xl:grid-cols-3">
+        <Card className=" max-w-[80vw] min-w-[300px] shadow-md">
           <CardHeader>
             <CardTitle>Total Events</CardTitle>
             {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
@@ -79,7 +79,7 @@ export default async function Home() {
         </Button>
       </div>
       <div className="flex flex-col items-center justify-center max-w-[80vw]">
-        <Table className="border">
+        <Table className="border bg-white rounded-md shadow-md">
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">By</TableHead>

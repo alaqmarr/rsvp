@@ -1,3 +1,4 @@
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CountUp from "@/components/ui/Countup";
@@ -53,7 +54,7 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
     }
   return (
     <div className="flex flex-col items-center justify-center p-5 gap-y-3">
-      <div className="grid sm:gris-cols-1 md:grid-cols-1 lg:gris-cols-2 xl:grid-cols-2 gap-x-3 gap-y-4">
+      <div className="grid sm:gris-cols-1 md:grid-cols-1 lg:gris-cols-2 xl:grid-cols-3 gap-x-3 gap-y-4">
         <Card className="max-w-[80vw] min-w-[300px] shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
@@ -112,11 +113,19 @@ const Dashboard = async ({ params }: { params: Promise<{ rsvpId: string }> }) =>
           </CardContent>
         </Card>
       </div>
+      <Alert>
+        <AlertTitle>General RSVP Link</AlertTitle>
+        <AlertDescription className="break-all">
+          https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
+        </AlertDescription>
+
+      </Alert>
       <Button variant="default">
         <Link href={`/dashboard/${rsvpId}/view-template`}>
           View Invitation Template
         </Link>
       </Button>
+
       <div className="flex flex-col gap-y-4 items-start w-full max-w-[90vw]">
         <p>Attendee Table</p>
         <Table className="border">

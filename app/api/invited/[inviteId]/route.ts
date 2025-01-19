@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  res: NextResponse,
-  { params }: { params: Promise<{ inviteId: string }> }
+  { params }: { params: { inviteId: string } }
 ) {
   const body = await req.json();
   const inviteId = (await params).inviteId;
@@ -21,9 +20,10 @@ export async function POST(
       body: {
         error: "Invite not found",
       },
-    })};
+    });
+  }
 
-  const bodyData = body.data;
+  const bodyData = body;
 
   const invitedName = data.name;
   const rsvpId = data.rsvpid;

@@ -34,42 +34,42 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
+import { stringify } from "querystring";
 
 const formSchema = z.object({
-  count: z
-    .number()
-    .int()
-    .min(0, "Please select a valid number of attendees."),
+  count: z.number().int(),
   willAttend: z.boolean(),
 });
 
 export function Invited() {
   const params = useParams();
   const inviteId = params.inviteId;
-  const [invited, setInvited] = useState(1);
+  const [invited, setInvited] = useState(1);  // Initial value as 1
 
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(`/api/get-invite/${inviteId}`);
       if (response.status === 200) {
-        setInvited(response.data.count); // Assuming this returns the count of allowed invites
+        const inviteCount = response.data.data.invites; // Ensure this is correct based on your API
+        setInvited(inviteCount);  // Set the count of invites to the state
       } else {
         toast.error("Failed to fetch invitation data.");
       }
     }
     fetchData();
-  }, []);
+  }, [inviteId]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      count: 0, // Default starts from 0
+      count: 1,
       willAttend: true,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     toast.loading("Processing RSVP...");
+    toast.success(stringify(values));
     try {
       const response = await axios.post(`/api/invited/${inviteId}`, values);
       if (response.status === 200) {
@@ -110,7 +110,7 @@ export function Invited() {
                       <FormLabel>Number of Attendees</FormLabel>
                       <Select
                         onValueChange={(value) => field.onChange(Number(value))}
-                        defaultValue={field.value.toString()}
+                        value={field.value.toString()}  // Ensure value updates with form state
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -118,9 +118,9 @@ export function Invited() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Array.from({ length: invited + 1 }, (_, index) => (
+                          {Array.from({ length: invited +1 }, (_, index) => (
                             <SelectItem key={index} value={index.toString()}>
-                              {index}
+                              {index} {/* Display index+1 for a 1-based count */}
                             </SelectItem>
                           ))}
                         </SelectContent>
