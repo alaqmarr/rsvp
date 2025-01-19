@@ -94,7 +94,7 @@ const Template = async ({
             </p>
           </div>
 
-          <Separator />
+          <Separator className="bg-black"/>
 
           <div className="flex flex-col items-end justify-center w-full">
             <p className="font-[kanz] font-bold text-2xl">, والسلام</p>
