@@ -59,9 +59,10 @@ const Invitations = () => {
   }
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    <div className="flex flex-col items-center justify-center p-5 gap-y-3">
+      <Form {...form}
+      >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 min-w-[280px] max-w-[80vw] flex flex-col items-center text-start">
           <FormField
             control={form.control}
             name="first"
