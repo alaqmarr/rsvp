@@ -135,7 +135,7 @@ const Template = async ({
               <CalendarCheck/>
               </span>
               <p>
-                <strong>{new Date(data.date).toLocaleDateString()}</strong>
+                <strong>{new Date(data.date).toDateString()}</strong>
               </p>
             </div>
             <div className="flex items-center justify-start w-full">
