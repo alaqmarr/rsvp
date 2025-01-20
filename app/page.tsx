@@ -109,7 +109,7 @@ export default async function Home() {
               <TableRow key={rsvp.id}>
                 <TableCell>{rsvp.organiser}</TableCell>
                 <TableCell className="font-medium">{rsvp.name}</TableCell>
-                <TableCell>{format(rsvp.date, "dd-MM-yy")}</TableCell>
+                <TableCell>{new Date(rsvp.date).toLocaleDateString()}</TableCell>
                 <TableCell>{rsvp.time}</TableCell>
                 <TableCell className="text-right">
                   {rsvp.invites.length}

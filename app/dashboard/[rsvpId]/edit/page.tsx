@@ -20,7 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
@@ -89,7 +89,11 @@ const Create = () => {
   useEffect(() => {
     if (currentData) {
       form.setValue("by", currentData.by);
-      form.setValue("date", currentData.date ? new Date(currentData.date) : new Date());
+  
+      // Convert stored date string to a proper Date object
+      const date = currentData.date ? parseISO(currentData.date) : new Date();
+      form.setValue("date", date);
+  
       form.setValue("time", currentData.time);
       form.setValue("name", currentData.name);
       form.setValue("description", currentData.description);
@@ -97,23 +101,25 @@ const Create = () => {
       form.setValue("organiser", currentData.organiser);
     }
   }, [currentData]);
-
-  // Show a loading state while fetching data
-  if (!currentData) {
-    return <Loading />;
-  }
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Processing request...");
   
-    // Format the date to ensure no timezone issues
-    const formattedValues = {
+  // Adjust the date value before submitting to ensure it's in UTC
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const dateInUTC = new Date(
+      Date.UTC(
+        values.date.getFullYear(),
+        values.date.getMonth(),
+        values.date.getDate()
+      )
+    );
+  
+    const updatedValues = {
       ...values,
-      date: values.date.toISOString().split("T")[0], // Convert to YYYY-MM-DD
+      date: dateInUTC.toISOString(), // Ensure date is sent in ISO 8601 UTC format
     };
   
+    toast.loading("Processing request...");
     try {
-      const response = await axios.post(`/api/update/${rsvpId}`, formattedValues);
+      const response = await axios.post(`/api/update/${rsvpId}`, updatedValues);
       if (response.status === 200) {
         toast.remove();
         toast.success("Event updated successfully");
@@ -132,7 +138,6 @@ const Create = () => {
       console.error("Error:", error);
     }
   }
-  
 
   return (
     <div className="flex flex-col items-center justify-center p-5">
@@ -202,61 +207,49 @@ const Create = () => {
                 )}
               />
               <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date < new Date() || date > new Date("2026-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+  control={form.control}
+  name="date"
+  render={({ field }) => (
+    <FormItem className="flex flex-col">
+      <FormLabel>Date</FormLabel>
+      <FormControl>
+        <Popover>
+          <PopoverTrigger asChild>
+            <FormControl>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-[240px] pl-3 text-left font-normal",
+                  !field.value && "text-muted-foreground"
                 )}
-              />
-              <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Time</FormLabel>
-                    <FormControl>
-                      <Input placeholder="12:00 PM" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              >
+                {field.value ? (
+                  format(field.value, "PPP")
+                ) : (
+                  <span>Pick a date</span>
                 )}
-              />
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </FormControl>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={field.value}
+              onSelect={(date) => date && field.onChange(new Date(date))}
+              disabled={(date) =>
+                date < new Date() || date > new Date("2026-01-01")
+              }
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
 
               <FormField
                 control={form.control}

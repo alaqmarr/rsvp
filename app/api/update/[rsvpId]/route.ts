@@ -1,16 +1,17 @@
 import prismadb from "@/lib/db";
+import { parseISO } from "date-fns";
 import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ rsvpId: string }> }
+  { params }: { params: { rsvpId: string } }
 ) {
   const body = await req.json();
-  const rsvpId = (await params).rsvpId;
+  const rsvpId = params.rsvpId;
 
   try {
-    // Convert date string back to Date object in UTC
-    const date = new Date(body.date);
+    // Parse incoming date and ensure it's stored in UTC
+    const date = parseISO(body.date);
 
     const data = await prismadb.rsvp.update({
       where: {
@@ -20,7 +21,7 @@ export async function POST(
         name: body.name,
         description: body.description,
         venue: body.venue,
-        date: date,
+        date: date.toISOString(), // Store date in ISO 8601 UTC format
         time: body.time,
         organiser: body.organiser,
         by: body.by,
@@ -33,7 +34,7 @@ export async function POST(
         message: "RSVP updated successfully",
       },
       rsvpid: rsvpId,
-      data: data,
+      data: body,
     });
   } catch (error: any) {
     return NextResponse.json({
