@@ -5,6 +5,7 @@ const isPublicRoute = createRouteMatcher([
   "/rsvp(.*)",
   "/api(.*)",
   "/invite(.*)",
+  "/dashboard(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {

@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import prismadb from "@/lib/db";
+import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -66,6 +67,7 @@ const Dashboard = async ({
   for (const attendee of data.attendee) {
     attendees += attendee.count;
   }
+
   return (
     <div className="flex flex-col items-center justify-center p-5 gap-y-3">
       <div className="min-w-[50vw] max-w-[80vw] flex justify-around gap-y-3 flex-wrap">
