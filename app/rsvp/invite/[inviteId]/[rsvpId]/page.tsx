@@ -95,7 +95,7 @@ const Template = async ({
           <CardTitle className="flex items-center justify-center text-center w-full">
           <div className="flex items-center justify-center w-full text-center">
             <p className="font-[marjaan] font-bold text-3xl">
-              بسم الله الرحمان الرحيم
+            بسم الله الرحمٰن الرحيم
             </p>
           </div>
           </CardTitle>

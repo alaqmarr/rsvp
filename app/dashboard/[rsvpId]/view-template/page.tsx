@@ -32,8 +32,8 @@ const Template = async ({
         <CardHeader>
           <CardTitle className="flex items-center justify-center text-center w-full">
           <div className="flex items-center justify-center w-full text-center">
-            <p className="font-[marjaan] font-bold text-3xl">
-              بسم الله الرحمان الرحيم
+            <p className="font-[kanz] font-semibold text-3xl">
+            بسم الله الرحمٰن الرحيم
             </p>
           </div>
           </CardTitle>
