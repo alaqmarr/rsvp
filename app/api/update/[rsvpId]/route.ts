@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { rsvpId: string } }
+  { params }: { params: Promise<{ rsvpId: string }> }
 ) {
   const body = await req.json();
-  const rsvpId = params.rsvpId;
+  const rsvpId = (await params).rsvpId;
 
   try {
     // Parse incoming date and ensure it's stored in UTC
