@@ -6,10 +6,12 @@ export async function POST(
   { params }: { params: Promise<{ rsvpId: string }> }
 ) {
   const body = await req.json();
-
   const rsvpId = (await params).rsvpId;
 
   try {
+    // Convert date string back to Date object in UTC
+    const date = new Date(body.date);
+
     const data = await prismadb.rsvp.update({
       where: {
         id: rsvpId,
@@ -18,7 +20,7 @@ export async function POST(
         name: body.name,
         description: body.description,
         venue: body.venue,
-        date: body.date,
+        date: date,
         time: body.time,
         organiser: body.organiser,
         by: body.by,
@@ -28,10 +30,10 @@ export async function POST(
     return NextResponse.json({
       status: 200,
       body: {
-        message: "RSVP found",
+        message: "RSVP updated successfully",
       },
       rsvpid: rsvpId,
-      data: body,
+      data: data,
     });
   } catch (error: any) {
     return NextResponse.json({

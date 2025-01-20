@@ -105,26 +105,34 @@ const Create = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     toast.loading("Processing request...");
+  
+    // Format the date to ensure no timezone issues
+    const formattedValues = {
+      ...values,
+      date: values.date.toISOString().split("T")[0], // Convert to YYYY-MM-DD
+    };
+  
     try {
-      const response = await axios.post(`/api/update/${rsvpId}`, values);
+      const response = await axios.post(`/api/update/${rsvpId}`, formattedValues);
       if (response.status === 200) {
         toast.remove();
         toast.success("Event updated successfully");
       }
     } catch (error: any) {
       toast.remove();
-
+  
       const errorMessage =
         error.response?.data?.body?.status +
         " - " +
         error.response?.data?.body?.error ||
         error.message ||
         "An error occurred. Please try again";
-
+  
       toast.error(errorMessage);
       console.error("Error:", error);
     }
   }
+  
 
   return (
     <div className="flex flex-col items-center justify-center p-5">

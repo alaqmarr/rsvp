@@ -1,5 +1,6 @@
 import DeleteAttendee from "@/components/DeleteAttendee";
 import DeleteInvite from "@/components/DeleteInvite";
+import ShortenUrl from "@/components/ShortenUrl";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -135,6 +136,7 @@ const Dashboard = async ({
         </AlertTitle>
         <AlertDescription className="break-all">
           https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
+          <ShortenUrl longUrl={`https://rsvp.alaqmar.dev/rsvp/v1/${rsvpId}`} />
         </AlertDescription>
       </Alert>
       <Button variant="default">
