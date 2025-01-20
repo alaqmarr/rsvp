@@ -89,11 +89,12 @@ export function Invited() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="secondary" size="lg">
-          <SaveIcon /> RSVP NOW
+      <Button variant="default" className="text-xs">
+          <SaveIcon />
+          Click here to confirm your presence
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="max-w-[80vw] rounded-lg">
+      <AlertDialogContent className="sm:max-w-[80vw] lg:max-w-[80vw] xl:max-w-[40vw] 2xl:max-w-[40vw] rounded-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>😃 Thank you for RSVPing!</AlertDialogTitle>
           <AlertDialogDescription>

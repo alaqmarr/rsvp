@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Checkbox } from "./ui/checkbox";
 const formSchema = z.object({
   first: z.string().nonempty("First name is required"),
   last: z.string().nonempty("Last name is required"),
@@ -68,12 +69,12 @@ export function General() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="secondary" size="lg">
+        <Button variant="default" className="text-xs">
           <SaveIcon />
-          RSVP NOW
+          Click here to confirm your presence
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="max-w-[80vw] rounded-lg">
+      <AlertDialogContent className="sm:max-w-[80vw] lg:max-w-[80vw] xl:max-w-[40vw] 2xl:max-w-[40vw] rounded-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>😃 Thank you for RSVPing!</AlertDialogTitle>
           <AlertDialogDescription>
@@ -107,20 +108,24 @@ export function General() {
                   )}
                 />
                 <FormField
-                  control={form.control}
-                  name="willAttend"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                      <FormLabel>Will Attend</FormLabel>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
+          control={form.control}
+          name="willAttend"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
                 />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  Will attend this event
+                </FormLabel>
+              </div>
+            </FormItem>
+          )}
+        />
                 <Button type="submit" className="w-full">
                   RSVP
                 </Button>
