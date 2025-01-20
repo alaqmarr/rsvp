@@ -126,7 +126,9 @@ const Dashboard = async ({
         </Card>
       </div>
       <Alert className="max-w-[80vw] bg-slate-100">
-        <AlertTitle className="underline uppercase">General RSVP Link</AlertTitle>
+        <AlertTitle className="underline uppercase">
+          General RSVP Link
+        </AlertTitle>
         <AlertDescription className="break-all">
           https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
         </AlertDescription>
@@ -143,19 +145,16 @@ const Dashboard = async ({
           <TableHeader>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell>Attending</TableCell>
+              <TableCell>Will Attend</TableCell>
+              <TableCell>Count</TableCell>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.attendee.map((invite) => (
               <TableRow key={invite.id}>
                 <TableCell>{invite.name}</TableCell>
-                <TableCell>{invite.willAttend}</TableCell>
-                <TableCell>
-                  {data.attendee.find((attendee) => attendee.id === invite.id)
-                    ? "Yes"
-                    : "No"}
-                </TableCell>
+                <TableCell>{invite.willAttend ? "Yes" : "No"}</TableCell>
+                <TableCell>{invite.count}</TableCell>
               </TableRow>
             ))}
           </TableBody>

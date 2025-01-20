@@ -16,6 +16,7 @@ export async function POST(
         name: first + " " + last,
         willAttend: willAttend,
         rsvpid: rsvpId,
+        count: willAttend ? 1 : 0,
       },
     });
 
