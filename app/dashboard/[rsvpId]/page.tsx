@@ -1,3 +1,5 @@
+import DeleteAttendee from "@/components/DeleteAttendee";
+import DeleteInvite from "@/components/DeleteInvite";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -147,6 +149,7 @@ const Dashboard = async ({
               <TableCell>Name</TableCell>
               <TableCell>Will Attend</TableCell>
               <TableCell>Count</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -155,6 +158,9 @@ const Dashboard = async ({
                 <TableCell>{invite.name}</TableCell>
                 <TableCell>{invite.willAttend ? "Yes" : "No"}</TableCell>
                 <TableCell>{invite.count}</TableCell>
+                <TableCell>
+                  <DeleteAttendee id={invite.id} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -168,6 +174,7 @@ const Dashboard = async ({
               <TableCell>Invites</TableCell>
               <TableCell>RSVPed?</TableCell>
               <TableCell>Message</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -217,6 +224,9 @@ const Dashboard = async ({
                       Message
                     </Link>
                   </button>
+                </TableCell>
+                <TableCell>
+                  <DeleteInvite id={invite.id} />
                 </TableCell>
               </TableRow>
             ))}
