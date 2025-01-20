@@ -48,74 +48,72 @@ const Create = () => {
   const [currentData, setCurrentData] = useState<any>(null);
 
   useEffect(() => {
-    toast.loading(rsvpId);
+    toast.loading("Fetching event data...");
     const fetchData = async () => {
       if (rsvpId) {
         try {
-            const url = `/api/event/${rsvpId}`;
-          const response = await axios.get(url);
-          setCurrentData(response.data.data); // Ensure response contains the data
-            toast.remove();
-            toast.success(stringify(response.data.data));
+          const response = await axios.get(`/api/event/${rsvpId}`);
+          const data = response.data?.data;
+          if (data) {
+            setCurrentData(data);
+          } else {
+            console.error("Invalid data format:", response.data);
+          }
+          toast.remove();
+          toast.success("Data fetched successfully");
         } catch (error) {
+          toast.remove();
           console.error("Failed to fetch data:", error);
+          toast.error("Failed to fetch event data");
         }
       }
     };
     fetchData();
-
   }, [rsvpId]);
 
-  
-
-  // Always initialize the form regardless of `currentData`
+  // Initialize the form with default values
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        by: "",
-        date: new Date(),
-        time: "",
-        name: "",
-        description: "",
-        venue: "",
-        organiser: "",
+      by: "",
+      date: new Date(),
+      time: "",
+      name: "",
+      description: "",
+      venue: "",
+      organiser: "",
     },
   });
 
-
-  //set current data to form values
-
-    useEffect(() => {
-        if (currentData) {
-        form.setValue("by", currentData.by);
-        form.setValue("date", currentData.date);
-        form.setValue("time", currentData.time);
-        form.setValue("name", currentData.name);
-        form.setValue("description", currentData.description);
-        form.setValue("venue", currentData.venue);
-        form.setValue("organiser", currentData.organiser);
-        }
-    }, [currentData]);
+  // Set form values once currentData is fetched
+  useEffect(() => {
+    if (currentData) {
+      form.setValue("by", currentData.by);
+      form.setValue("date", currentData.date ? new Date(currentData.date) : new Date());
+      form.setValue("time", currentData.time);
+      form.setValue("name", currentData.name);
+      form.setValue("description", currentData.description);
+      form.setValue("venue", currentData.venue);
+      form.setValue("organiser", currentData.organiser);
+    }
+  }, [currentData]);
 
   // Show a loading state while fetching data
   if (!currentData) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.loading("Processing request");
+    toast.loading("Processing request...");
     try {
-      const request = await axios.post(`/api/update/${rsvpId}`, values);
-      if (request.status === 200) {
+      const response = await axios.post(`/api/update/${rsvpId}`, values);
+      if (response.status === 200) {
         toast.remove();
         toast.success("Event updated successfully");
       }
     } catch (error: any) {
       toast.remove();
 
-      // Improved error handling
       const errorMessage =
         error.response?.data?.body?.status +
         " - " +
@@ -126,13 +124,13 @@ const Create = () => {
       toast.error(errorMessage);
       console.error("Error:", error);
     }
-}
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-5">
       <Card className="flex flex-col items-center max-w-[80vw] min-w-[300px] shadow-md gap-y-3">
         <CardHeader className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Create Event</h2>
+          <h2 className="text-lg font-semibold">Update Event</h2>
         </CardHeader>
         <Separator />
 
