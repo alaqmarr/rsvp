@@ -91,7 +91,7 @@ export function General() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="First Name" {...field} />
+                        <Input placeholder="First Name" {...field} disabled={formState === "pending" ? true : formState === "success" ? true : false} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -103,7 +103,7 @@ export function General() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Last Name" {...field} />
+                        <Input placeholder="Last Name" {...field} disabled={formState === "pending" ? true : formState === "success" ? true : false} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -118,6 +118,7 @@ export function General() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
+                          disabled={formState === "pending" ? true : formState === "success" ? true : false}
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
