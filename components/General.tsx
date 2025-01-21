@@ -76,7 +76,7 @@ export function General() {
           Click here to confirm your presence
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="sm:max-w-[70vw] lg:max-w-[70vw] xl:max-w-[30vw] 2xl:max-w-[30vw] rounded-lg">
+      <AlertDialogContent className="sm:max-w-[60vw] lg:max-w-[60vw] xl:max-w-[30vw] 2xl:max-w-[30vw] rounded-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>😃 Thank you for RSVPing!</AlertDialogTitle>
           <AlertDialogDescription>
