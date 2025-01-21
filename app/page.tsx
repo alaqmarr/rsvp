@@ -23,6 +23,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { format } from "date-fns";
 
+
+const revalidate = 0;
+
 export default async function Home() {
   const rsvpsData = await prismadb.rsvp.findMany({
     include: {
@@ -46,7 +49,6 @@ export default async function Home() {
   for (const rsvp of rsvpsData) {
     totalrsvps += rsvp.attendee.length;
   }
-
   return (
     <section className="p-5 flex flex-col items-center justify-center w-full gap-y-4">
       <div className="min-w-[50vw] max-w-[80vw] flex justify-around gap-y-3 flex-wrap">
@@ -114,7 +116,9 @@ export default async function Home() {
                 <TableCell className="text-right">
                   {rsvp.invites.length}
                 </TableCell>
-                <TableCell>{rsvp.attendee.length}</TableCell>
+                <TableCell>{
+                  rsvp.attendee.length
+                }</TableCell>
                 <TableCell className="text-right">
                   <Link href={`/dashboard/${rsvp.id}`} target="_blank">
                     <Button variant="secondary">Dashboard</Button>

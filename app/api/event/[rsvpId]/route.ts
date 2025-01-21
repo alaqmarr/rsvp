@@ -23,6 +23,10 @@ export async function GET(
       where: {
         id: rsvpId,
       },
+      include: {
+        invites: true,
+        attendee: true,
+      }
     });
 
     if (!data) {
