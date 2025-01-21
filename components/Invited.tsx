@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { SaveIcon } from "lucide-react";
+import { CheckCircleIcon, Loader2Icon, SaveIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -42,6 +42,7 @@ const formSchema = z.object({
 });
 
 export function Invited() {
+  const [formState, setFormState] = useState<"none" | "pending" | "success">("none");
   const params = useParams();
   const inviteId = params.inviteId;
   const [invited, setInvited] = useState(1);  // Initial value as 1
@@ -69,17 +70,20 @@ export function Invited() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     toast.loading("Processing RSVP...");
+    setFormState("pending");
     toast.success(stringify(values));
     try {
       const response = await axios.post(`/api/invited/${inviteId}`, values);
       if (response.status === 200) {
         toast.dismiss();
         toast.success("RSVP created successfully.");
+        setFormState("success");
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } else {
         toast.error("Failed to submit RSVP.");
+        setFormState("none");
       }
     } catch (error) {
       toast.error("An error occurred while submitting RSVP.");
@@ -89,7 +93,7 @@ export function Invited() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-      <Button variant="default" className="text-xs">
+        <Button variant="default" className="text-xs">
           <SaveIcon />
           Click here to confirm your presence
         </Button>
@@ -119,7 +123,7 @@ export function Invited() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Array.from({ length: invited +1 }, (_, index) => (
+                          {Array.from({ length: invited + 1 }, (_, index) => (
                             <SelectItem key={index} value={index.toString()}>
                               {index} {/* Display index+1 for a 1-based count */}
                             </SelectItem>
@@ -131,9 +135,28 @@ export function Invited() {
                   )}
                 />
                 out of {invited} invited
-                <Button type="submit" className="w-full">
-                  RSVP
-                </Button>
+                {
+                  formState === "none" ?
+
+                    <Button type="submit" className="w-full">
+                      RSVP
+                    </Button>
+
+                    :
+
+                    <Button type="button" className={`w-full ${formState === "success" ? "bg-emerald-500" : "bg-slate-300"}`} disabled={true}>
+                      {
+                        formState === "pending" ? <Loader2Icon /> : formState === "success" ?
+                          <p>
+                            <CheckCircleIcon className="inline-block mr-2" />
+                            RSVP Successful
+                          </p>
+                          : "Unexpected Error Occurred"
+                      }
+                    </Button>
+
+
+                }
               </form>
             </Form>
           </AlertDialogDescription>
