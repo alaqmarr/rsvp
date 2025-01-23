@@ -1,3 +1,4 @@
+export const fetchCache = 'force-no-store';
 import prismadb from "@/lib/db";
 import Image from "next/image";
 import {
@@ -22,7 +23,6 @@ import CountUp from "@/components/ui/Countup";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { format } from "date-fns";
-
 
 const revalidate = 0;
 
