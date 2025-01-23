@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
     if (event) {
       const generateUrl = await shortenUrl(
-        `https://mystore.alaqmar.dev/rsvp/v1/${event.id}`
+        `https://rsvp.alaqmar.dev/rsvp/v1/${event.id}`
       );
       if (!generateUrl) {
         return NextResponse.json({

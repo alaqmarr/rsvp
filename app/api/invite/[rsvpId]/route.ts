@@ -48,7 +48,9 @@ export async function POST(
     });
 
     if (data) {
-      const shortUrl = await shortenUrl(`https://rsvp.com/invite/${data.id}`);
+      const shortUrl = await shortenUrl(
+        `https://rsvp.alaqmar.dev/rsvp/invite/${data.id}/${rsvpId}`
+      );
 
       if (shortUrl) {
         const updateInvite = await prismadb.invites.update({
