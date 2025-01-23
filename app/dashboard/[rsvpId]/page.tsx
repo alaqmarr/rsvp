@@ -5,6 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CountUp from "@/components/ui/Countup";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -13,7 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import prismadb from "@/lib/db";
-import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -131,12 +131,23 @@ const Dashboard = async ({
         </Card>
       </div>
       <Alert className="max-w-[80vw] bg-slate-100">
-        <AlertTitle className="underline uppercase">
+        <AlertTitle className="uppercase">
           General RSVP Link
         </AlertTitle>
+        <Separator className="w-full bg-black mt-2 mb-2" />
         <AlertDescription className="break-all">
-          https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
-          <ShortenUrl longUrl={`https://rsvp.alaqmar.dev/rsvp/v1/${rsvpId}`} />
+          {
+            data.gen_link ? (
+              <code className="break-all">
+                {data.gen_link}
+              </code>
+            ) : (
+              <div>
+                https://rsvp.alaqmar.dev/rsvp/v1/{rsvpId}
+                <ShortenUrl longUrl={`https://rsvp.alaqmar.dev/rsvp/v1/${rsvpId}`} />
+              </div>
+            )
+          }
         </AlertDescription>
       </Alert>
       <Button variant="default">
@@ -213,17 +224,13 @@ const Dashboard = async ({
                       ></path>
                     </svg>
                     <Link
-                      href={`https://wa.me/${
-                        invite.phone
-                      }?text=${encodeURIComponent(
-                        `Reminder to fill your RSVP for ${
-                          data.name
-                        } on ${new Date(data.date).toLocaleDateString()} at ${
-                          data.time
-                        }.%0A Click on the link below to RSVP: %0A https://rsvp.alaqmar.dev/rsvp/invite/${
-                          invite.id
-                        }/${rsvpId}`
-                      )}`}
+                      href={`https://wa.me/${invite.phone
+                        }?text=${encodeURIComponent(
+                          `Reminder to fill your RSVP for ${data.name
+                          } on ${new Date(data.date).toLocaleDateString()} at ${data.time
+                          }.%0A Click on the link below to RSVP: %0A ${invite.link ? invite.link : `https://rsvp.alaqmar.dev/rsvp/invite/${invite.id
+                            }/${rsvpId}`}`
+                        )}`}
                     >
                       Message
                     </Link>

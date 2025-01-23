@@ -69,7 +69,6 @@ const Create = () => {
           "An error occurred. Please try again"
       );
     }
-    console.log(values);
   }
   return (
     <div className="flex flex-col items-center justify-center p-5">

@@ -1,5 +1,33 @@
 import prismadb from "@/lib/db";
-import { NextResponse, NextRequest } from "next/server";
+import axios from "axios";
+import { NextResponse } from "next/server";
+
+const BITLY_ACCESS_TOKEN = "56453ee52c12fab4be6fb4aed66f80fba7050155";
+
+async function shortenUrl(longUrl: string) {
+  try {
+    const response = await axios.post(
+      "https://api-ssl.bitly.com/v4/shorten",
+      {
+        long_url: longUrl,
+        domain: "bit.ly",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${BITLY_ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return {
+      shortUrl: response.data.link,
+      status: 200,
+    };
+  } catch (error: any) {
+    return null;
+  }
+}
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -34,13 +62,53 @@ export async function POST(request: Request) {
     });
 
     if (event) {
-      return NextResponse.json({
-        status: 200,
-        body: {
-          message: "Event created successfully",
-        },
-        event: event,
-      });
+      const generateUrl = await shortenUrl(
+        `https://mystore.alaqmar.dev/rsvp/v1/${event.id}`
+      );
+      if (!generateUrl) {
+        return NextResponse.json({
+          status: 200,
+          body: {
+            message: "Event created successfully but short url failed",
+          },
+          event: event,
+        });
+      }
+      if (generateUrl && generateUrl.status === 200) {
+        const setUrl = await prismadb.rsvp.update({
+          where: {
+            id: event.id,
+          },
+          data: {
+            gen_link: generateUrl.shortUrl,
+          },
+        });
+
+        if (!setUrl) {
+          return NextResponse.json({
+            status: 200,
+            body: {
+              message: "Event created successfully but short url failed",
+            },
+            event: event,
+          });
+        }
+        return NextResponse.json({
+          status: 200,
+          body: {
+            message: "Event created successfully",
+          },
+          event: setUrl,
+        });
+      } else {
+        return NextResponse.json({
+          status: 200,
+          body: {
+            message: "Event created successfully but short url failed",
+          },
+          event: event,
+        });
+      }
     }
   } catch (error: any) {
     return NextResponse.json({

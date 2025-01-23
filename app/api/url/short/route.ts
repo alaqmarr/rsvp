@@ -4,6 +4,7 @@ import axios from "axios";
 const BITLY_ACCESS_TOKEN = "56453ee52c12fab4be6fb4aed66f80fba7050155"; // Store this securely in an environment variable for better security.
 
 export async function POST(req: Request) {
+  console.log(req)
   try {
     const { longUrl } = await req.json(); // Parse the input request body
     if (!longUrl) {

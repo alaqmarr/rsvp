@@ -21,6 +21,7 @@ model rsvp {
   by          String
   organiser   String
   description String
+  gen_link    String?
   date        DateTime
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -33,7 +34,7 @@ model attendee {
   name       String
   willAttend Boolean
   rsvpid     String
-  count     Int     @default(1)
+  count      Int      @default(1)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   RSVP       rsvp     @relation(fields: [rsvpid], references: [id])
@@ -42,6 +43,7 @@ model attendee {
 model invites {
   id        String   @id @default(cuid())
   name      String
+  link      String?
   phone     String
   rspved    Boolean  @default(false)
   invites   Int      @default(1)

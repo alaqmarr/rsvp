@@ -1,6 +1,33 @@
 import prismadb from "@/lib/db";
+import axios from "axios";
 import { NextResponse } from "next/server";
 
+const BITLY_ACCESS_TOKEN = "56453ee52c12fab4be6fb4aed66f80fba7050155";
+
+async function shortenUrl(longUrl: string) {
+  try {
+    const response = await axios.post(
+      "https://api-ssl.bitly.com/v4/shorten",
+      {
+        long_url: longUrl,
+        domain: "bit.ly",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${BITLY_ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return {
+      shortUrl: response.data.link,
+      status: 200,
+    };
+  } catch (error: any) {
+    return null;
+  }
+}
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ rsvpId: string }> }
@@ -16,9 +43,40 @@ export async function POST(
         name: first + " " + last,
         phone: mobile,
         rsvpid: rsvpId,
-        invites: count
+        invites: count,
       },
     });
+
+    if (data) {
+      const shortUrl = await shortenUrl(`https://rsvp.com/invite/${data.id}`);
+
+      if (shortUrl) {
+        const updateInvite = await prismadb.invites.update({
+          where: {
+            id: data.id,
+          },
+          data: {
+            link: shortUrl.shortUrl,
+          },
+        });
+
+        if (!updateInvite) {
+          return NextResponse.json({
+            status: 200,
+            body: {
+              error: "Invite added",
+            },
+          });
+        } else {
+          return NextResponse.json({
+            status: 200,
+            body: {
+              error: "Invite added",
+            },
+          });
+        }
+      }
+    }
 
     return NextResponse.json({
       status: 200,
